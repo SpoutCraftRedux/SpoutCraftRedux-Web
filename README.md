@@ -41,3 +41,5 @@ curl -X POST https://api.spoutcraftredux.org/v2/spoutcraftredux-server/26.3 \
 ```
 
 Reference: https://api.spoutcraftredux.org/docs
+
+To make an existing account staff, run `node scripts/make-staff.mjs <username>` with `NITRO_DATABASE_URL` set, from `apps/api` locally or from `/app/migrate` in the API container.

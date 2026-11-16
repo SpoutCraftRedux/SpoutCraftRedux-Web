@@ -1,10 +1,10 @@
 seo:
   title: SpoutCraft Redux
-  description: SpoutCraft Redux brings Spoutcraft back for Minecraft 26.3. A Purpur-based server and a Fabric client mod for custom GUIs, HUDs, skies, sounds and keybinds, with full support for players on vanilla clients.
+  description: SpoutCraft Redux brings Spoutcraft back for Minecraft 26.3. A Purpur-based server and a Fabric client mod for custom GUIs, HUDs, notifications, sounds and key bindings.
 title: "Spoutcraft, remade\nfor modern Minecraft."
-description: A Purpur-based server and a Fabric client mod that let servers push custom GUIs, HUDs, skies, sounds and keybinds to players. Players without the mod can still join.
+description: A Purpur-based server and a Fabric client mod that let servers push custom GUIs, HUDs, notifications, sounds and key bindings to players.
 hero:
-  headline: "Early development · Minecraft 26.3"
+  headline: "For Minecraft 26.3"
   links:
     - label: Downloads
       color: primary
@@ -59,40 +59,40 @@ terminal:
 features:
   headline: Features
   title: "What the client mod unlocks."
-  description: The classic Spoutcraft feature set, rebuilt on modern Minecraft. Each feature has a vanilla fallback, so a server never has to choose between the two.
+  description: The classic Spoutcraft feature set, rebuilt on modern Minecraft. Players without the client can still join, and the server points them to the download.
   items:
     - icon: i-lucide-layout-dashboard
       title: Custom GUIs and HUD
-      description: Server-driven screens with buttons, text fields and sliders, plus HUD widgets that can hide or move the vanilla bars. Popups fall back to vanilla dialogs.
+      description: Server-driven screens with buttons, text fields, sliders, lists and images, plus HUD widgets drawn over the game.
       badge: Client mod
     - icon: i-lucide-cloud-sun
       title: Sky and environment
       description: Sky, fog and cloud colours, cloud height, stars, and the size and texture of the sun and moon, set per player and reset on disconnect.
       badge: Client mod
     - icon: i-lucide-audio-lines
-      title: Custom sounds
-      description: Sound events delivered through a generated server resource pack, with optional HTTPS streaming that each server has to opt into.
+      title: Custom sounds and resource packs
+      description: Plugins ship sounds, models and textures in a resource pack that the server merges and sends to every player on join.
       badge: Works on vanilla
     - icon: i-lucide-keyboard
-      title: Server keybinds
-      description: Plugins register key bindings that appear under a Server category in the controls menu. Presses arrive as events, only for keys the server declared.
+      title: Server key bindings
+      description: Plugins register key bindings that players see and rebind under Custom Bindings in the Controls screen. Presses arrive as events, only for keys the server declared.
       badge: Client mod
     - icon: i-lucide-map-pin
       title: Waypoints
-      description: Locator bar waypoints for every player, with in-world beacons and Xaero's and JourneyMap integration for modded clients.
-      badge: Works on vanilla
+      description: In-world waypoints for players with the client, with Xaero's and JourneyMap integration.
+      badge: Later
     - icon: i-lucide-shirt
       title: Capes and nameplates
-      description: Server-provided cape textures and multi-line coloured name titles, with text displays as the fallback for vanilla clients.
-      badge: Client mod
+      description: Server-provided cape textures and multi-line coloured name titles.
+      badge: Later
     - icon: i-lucide-move
       title: Movement
-      description: Gravity, walk, swim and jump multipliers built on vanilla attributes, so they apply to every player on the server.
+      description: Gravity, walking and jumping multipliers built on vanilla attributes, so they apply to every player on the server.
       badge: Works on vanilla
     - icon: i-lucide-bell
       title: Notifications
-      description: Native toasts for modded clients, falling back to an advancement toast or an action bar message for everyone else.
-      badge: Works on vanilla
+      description: A popup that slides in at the top right with a title, a message and an item icon.
+      badge: Client mod
     - icon: i-lucide-box
       title: Custom blocks
       description: Server-defined blocks are the hardest part and come last, starting with a mapping onto spare vanilla block states.
@@ -100,7 +100,7 @@ features:
 platform:
   headline: Platform
   title: "A server, a mod, and room for everyone."
-  description: SpoutCraft Redux is two pieces that talk over a versioned handshake. Neither piece locks out players who skip the other.
+  description: SpoutCraft Redux is two pieces that talk over a versioned handshake.
   items:
     - icon: i-lucide-server
       title: Purpur-based server
@@ -109,8 +109,8 @@ platform:
       title: Fabric client mod
       description: A Fabric mod for Minecraft 26.3 that announces its capabilities when joining. NeoForge support is planned.
     - icon: i-lucide-users
-      title: Vanilla clients welcome
-      description: Players without the mod join as normal. Every feature declares what they see instead, such as a dialog, a resource pack, or nothing.
+      title: Players without the client
+      description: They can still join. Client features do nothing for them, and the server sends a chat message with a link to download the client.
     - icon: i-lucide-code-xml
       title: Plugin API
       description: Plugins compile against spoutcraftredux-api, check whether a player has the client, and use the features it supports.
@@ -147,36 +147,9 @@ developers:
       icon: i-simple-icons-github
       color: neutral
       variant: ghost
-roadmap:
-  headline: Roadmap
-  title: "Where the project stands."
-  description: SpoutCraft Redux is in early development. Each phase ends in a working demo and automated tests.
-  items:
-    - phase: Phase 0
-      title: Skeleton
-      description: Server fork, Fabric client, shared protocol and the join handshake.
-      current: true
-    - phase: Phase 1
-      title: Vanilla parity
-      description: Movement, text displays, particles, sounds, toasts and server keybinds.
-    - phase: Phase 2
-      title: Widgets and HUD
-      description: The widget toolkit, popup screens, HUD overlays and dialog fallbacks.
-    - phase: Phase 3
-      title: Environment and appearance
-      description: Sky and fog, generated resource packs, custom sounds, capes and nameplates.
-    - phase: Phase 4
-      title: Items and API polish
-      description: Custom items over data components, recipes, Javadoc and a first API freeze.
-    - phase: Phase 5
-      title: Custom blocks
-      description: Block mapping onto vanilla states first, then a decision on deeper client support.
-    - phase: Phase 6
-      title: Breadth
-      description: NeoForge, Minecraft 26.4, minimap integrations and wider release channels.
 cta:
   title: "Follow along\nfrom the first build."
-  description: Server and client builds appear on the downloads page as soon as they are published. Expect rough edges while the project is in early development.
+  description: Server and client builds appear on the downloads page as soon as they are published.
   links:
     - label: Go to downloads
       color: primary

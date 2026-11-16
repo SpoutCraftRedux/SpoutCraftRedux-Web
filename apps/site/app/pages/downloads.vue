@@ -198,7 +198,7 @@ const columns: TableColumn<BuildResponse>[] = [
           v-else-if="!builds.length"
           icon="i-lucide-hammer"
           title="No builds yet"
-          :description="`SpoutCraft Redux is in early development and the first ${project.label.toLowerCase()} build hasn't been published. Builds show up here automatically once they're released.`"
+          :description="`The first ${project.label.toLowerCase()} build hasn't been published. Builds show up here automatically once they're released.`"
           variant="naked"
           :actions="[
             { label: 'Watch on GitHub', icon: 'i-simple-icons-github', color: 'neutral', variant: 'subtle', to: project.repo, target: '_blank' },

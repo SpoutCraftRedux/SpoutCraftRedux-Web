@@ -57,14 +57,6 @@ export const collections = {
         snippet: z.string().nonempty(),
         links: z.array(createLinkSchema())
       }),
-      roadmap: createSectionSchema().extend({
-        items: z.array(z.object({
-          phase: z.string().nonempty(),
-          title: z.string().nonempty(),
-          description: z.string().nonempty(),
-          current: z.boolean().optional()
-        }))
-      }),
       cta: z.object({
         title: z.string().nonempty(),
         description: z.string().nonempty(),

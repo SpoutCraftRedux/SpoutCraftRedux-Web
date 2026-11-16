@@ -67,7 +67,10 @@ function staggerMotion(index: number = 0) {
   }
 }
 
-const { copy, copied } = useClipboard()
+const snippetMarkdown = computed(() => {
+  const dev = page.value?.developers
+  return dev ? `\`\`\`kotlin [${dev.filename}]\n${dev.snippet.trim()}\n\`\`\`` : ''
+})
 </script>
 
 <template>
@@ -345,26 +348,11 @@ const { copy, copied } = useClipboard()
         v-bind="scrollMotion(0.2)"
         class="min-w-0"
       >
-        <div class="overflow-hidden rounded-xl border border-default bg-elevated/50 ring-1 ring-white/2">
-          <div class="flex items-center justify-between gap-2 border-b border-default py-2 ps-4 pe-2">
-            <span class="flex items-center gap-2 font-mono text-xs text-muted">
-              <UIcon
-                name="i-simple-icons-gradle"
-                class="size-4"
-              />
-              {{ page.developers.filename }}
-            </span>
-            <UButton
-              :icon="copied ? 'i-lucide-copy-check' : 'i-lucide-copy'"
-              :aria-label="copied ? 'Copied' : 'Copy snippet'"
-              color="neutral"
-              variant="ghost"
-              size="sm"
-              @click="copy(page.developers.snippet)"
-            />
-          </div>
-          <pre class="overflow-x-auto p-5 font-mono text-xs leading-[1.8] text-default"><code>{{ page.developers.snippet.trim() }}</code></pre>
-        </div>
+        <MDC
+          :value="snippetMarkdown"
+          tag="div"
+          class="*:my-0"
+        />
       </Motion>
     </UPageSection>
 

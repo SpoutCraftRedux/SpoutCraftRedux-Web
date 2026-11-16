@@ -4,6 +4,11 @@ export default defineAppConfig({
       primary: 'sky',
       neutral: 'zinc'
     },
+    prose: {
+      codeIcon: {
+        'build.gradle.kts': 'i-simple-icons-gradle'
+      }
+    },
     button: {
       slots: {
         base: 'font-semibold transition-all duration-200'

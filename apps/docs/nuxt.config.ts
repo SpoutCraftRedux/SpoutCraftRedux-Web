@@ -27,6 +27,13 @@ export default defineNuxtConfig({
       markdown: {
         toc: {
           searchDepth: 1
+        },
+        highlight: {
+          theme: {
+            default: 'github-light',
+            dark: 'github-dark'
+          },
+          langs: ['bash', 'shell', 'java', 'kotlin', 'groovy', 'xml', 'properties', 'json', 'yaml', 'toml', 'http', 'ts', 'js', 'vue', 'html', 'css', 'md', 'diff', 'ini']
         }
       }
     },

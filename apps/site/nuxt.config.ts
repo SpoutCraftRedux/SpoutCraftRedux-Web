@@ -20,6 +20,14 @@ export default defineNuxtConfig({
     }
   },
 
+  mdc: {
+    highlight: {
+      theme: 'github-dark',
+      langs: ['kotlin', 'bash'],
+      noApiRoute: false
+    }
+  },
+
   runtimeConfig: {
     public: {
       siteUrl: 'https://spoutcraftredux.org',

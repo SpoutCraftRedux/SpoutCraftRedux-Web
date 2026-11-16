@@ -1,0 +1,10 @@
+import { definePrismaConfig } from 'prisma/config'
+import { defineConfig as ormConfig } from '@prisma/orm-postgres/config'
+
+export default definePrismaConfig({
+  orm: ormConfig({
+    contract: './prisma/contract.prisma',
+    db: { connection: process.env.NITRO_DATABASE_URL },
+    migrations: { dir: './prisma/migrations' }
+  })
+})

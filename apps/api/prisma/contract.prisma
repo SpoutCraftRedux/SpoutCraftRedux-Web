@@ -1,0 +1,212 @@
+// use prisma-8
+
+native_enum role {
+  user  = "user"
+  staff = "staff"
+}
+
+native_enum server_state {
+  draft             = "draft"
+  pending           = "pending"
+  approved          = "approved"
+  changes_requested = "changes_requested"
+  rejected          = "rejected"
+}
+
+native_enum report_reason {
+  offline       = "offline"
+  wrong_info    = "wrong_info"
+  inappropriate = "inappropriate"
+  scam          = "scam"
+  other         = "other"
+}
+
+native_enum report_status {
+  open     = "open"
+  resolved = "resolved"
+}
+
+native_enum promotion_status {
+  pending_payment = "pending_payment"
+  paid            = "paid"
+  cancelled       = "cancelled"
+  refunded        = "refunded"
+}
+
+native_enum promotion_source {
+  tebex = "tebex"
+  staff = "staff"
+}
+
+types {
+  Instant = TimestamptzJsDate
+}
+
+model User {
+  id           String                @id
+  username     String
+  passwordHash String                @map("password_hash")
+  email        String?
+  role         pg.enum(role)         @default("user")
+  banned       Boolean               @default(false)
+  createdAt    Instant               @default(now()) @map("created_at")
+
+  @@index(expression: sql`lower(username)`, unique: true, map: "users_username_lower")
+  @@map("users")
+}
+
+model Session {
+  id        String  @id
+  userId    String  @map("user_id")
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade, map: "sessions_user_id_users_id_fk")
+  expiresAt Instant @map("expires_at")
+  createdAt Instant @default(now()) @map("created_at")
+
+  @@index([userId], map: "sessions_user")
+  @@map("sessions")
+}
+
+model Tag {
+  slug String @id
+  name String
+
+  @@map("tags")
+}
+
+model Server {
+  id                  String                @id
+  slug                String                @unique(map: "servers_slug_unique")
+  ownerId             String                @map("owner_id")
+  owner               User                  @relation(fields: [ownerId], references: [id], onDelete: Cascade, map: "servers_owner_id_users_id_fk")
+  name                String
+  address             String
+  port                Int                   @default(25565)
+  shortDescription    String                @map("short_description")
+  description         String                @default("")
+  website             String?
+  discord             String?
+  iconHash            String?               @map("icon_hash")
+  bannerHash          String?               @map("banner_hash")
+  state               pg.enum(server_state) @default("draft")
+  listed              Boolean               @default(true)
+  verified            Boolean               @default(false)
+  verifiedTarget      String?               @map("verified_target")
+  verifyCode          String                @map("verify_code")
+  reviewNote          String?               @map("review_note")
+  pendingRevision     Jsonb?                @map("pending_revision")
+  revisionSubmittedAt Instant?              @map("revision_submitted_at")
+  submittedAt         Instant?              @map("submitted_at")
+  featured            Boolean               @default(false)
+  sortWeight          Int                   @default(0) @map("sort_weight")
+  createdAt           Instant               @default(now()) @map("created_at")
+  updatedAt           Instant               @default(now()) @map("updated_at")
+  approvedAt          Instant?              @map("approved_at")
+  status              ServerStatus?
+  tags                ServerTag[]
+  promotions          Promotion[]
+
+  @@index([ownerId], map: "servers_owner")
+  @@index([state], map: "servers_state")
+  @@map("servers")
+}
+
+model ServerTag {
+  serverId String @map("server_id")
+  server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade, map: "server_tags_server_id_servers_id_fk", index: false)
+  tagSlug  String @map("tag_slug")
+  tag      Tag    @relation(fields: [tagSlug], references: [slug], onDelete: Cascade, map: "server_tags_tag_slug_tags_slug_fk", index: false)
+
+  @@id([serverId, tagSlug], map: "server_tags_server_id_tag_slug_pk")
+  @@map("server_tags")
+}
+
+model ServerStatus {
+  serverId      String                @id @map("server_id")
+  server        Server                @relation(fields: [serverId], references: [id], onDelete: Cascade, map: "server_status_server_id_servers_id_fk")
+  online        Boolean
+  playersOnline Int?                  @map("players_online")
+  playersMax    Int?                  @map("players_max")
+  version       String?
+  protocol      Int?
+  motd          String?
+  pingMs        Int?                  @map("ping_ms")
+  uptime24h     Float(storage: float4)? @map("uptime_24h")
+  checkedAt     Instant               @map("checked_at")
+
+  @@map("server_status")
+}
+
+model StatusCheck {
+  serverId  String  @map("server_id")
+  server    Server  @relation(fields: [serverId], references: [id], onDelete: Cascade, map: "status_checks_server_id_servers_id_fk", index: "status_checks_server_time")
+  checkedAt Instant @map("checked_at")
+  online    Boolean
+  players   Int?
+
+  @@index([serverId, checkedAt], map: "status_checks_server_time")
+  @@map("status_checks")
+}
+
+model Report {
+  id         String                 @id
+  serverId   String                 @map("server_id")
+  server     Server                 @relation(fields: [serverId], references: [id], onDelete: Cascade, map: "reports_server_id_servers_id_fk", index: false)
+  reporterId String                 @map("reporter_id")
+  reporter   User                   @relation(fields: [reporterId], references: [id], onDelete: Cascade, map: "reports_reporter_id_users_id_fk", index: false)
+  reason     pg.enum(report_reason)
+  details    String?
+  status     pg.enum(report_status) @default("open")
+  resolution String?
+  createdAt  Instant                @default(now()) @map("created_at")
+  resolvedAt Instant?               @map("resolved_at")
+
+  @@index([status], map: "reports_status")
+  @@map("reports")
+}
+
+// One row per purchasable duration, mapped to a fixed-price Tebex package
+model PromoProduct {
+  id             String  @id
+  name           String
+  days           Int
+  tebexPackageId String? @map("tebex_package_id")
+  priceLabel     String? @map("price_label")
+  active         Boolean @default(true)
+  sort           Int     @default(0)
+
+  @@map("promo_products")
+}
+
+model Promotion {
+  id            String                    @id
+  serverId      String                    @map("server_id")
+  server        Server                    @relation(fields: [serverId], references: [id], onDelete: Cascade, map: "promotions_server_id_servers_id_fk")
+  productId     String?                   @map("product_id")
+  product       PromoProduct?             @relation(fields: [productId], references: [id], onDelete: SetNull, map: "promotions_product_id_promo_products_id_fk", index: false)
+  days          Int
+  status        pg.enum(promotion_status) @default("pending_payment")
+  source        pg.enum(promotion_source)
+  startsAt      Instant?                  @map("starts_at")
+  endsAt        Instant?                  @map("ends_at")
+  buyerId       String?                   @map("buyer_id")
+  buyer         User?                     @relation(fields: [buyerId], references: [id], onDelete: SetNull, map: "promotions_buyer_id_users_id_fk", index: false)
+  basketIdent   String?                   @map("basket_ident")
+  transactionId String?                   @map("transaction_id")
+  amount        String?
+  currency      String?
+  note          String?
+  createdAt     Instant                   @default(now()) @map("created_at")
+  paidAt        Instant?                  @map("paid_at")
+
+  @@index([serverId], map: "promotions_server")
+  @@index([status, startsAt, endsAt], map: "promotions_window")
+  @@index([transactionId], unique: true, map: "promotions_transaction")
+  @@map("promotions")
+}
+
+model Setting {
+  key   String @id
+  value Jsonb
+
+  @@map("settings")
+}

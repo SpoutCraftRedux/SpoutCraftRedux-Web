@@ -15,11 +15,13 @@
     "@iconify-json/simple-icons": "^1.2.101",
     "@nuxt/content": "^3.16.2",
     "@nuxt/ui": "^4.12.0",
+    "@nuxtjs/mdc": "^0.23.3",
     "@vueuse/nuxt": "^14.4.0",
     "motion-v": "^2.11.1",
     "nuxt": "^4.6.4",
     "shaders": "^4.0.7",
-    "tailwindcss": "^4.3.5"
+    "tailwindcss": "^4.3.5",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.17.0",

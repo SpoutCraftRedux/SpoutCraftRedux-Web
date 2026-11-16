@@ -1,12 +1,19 @@
 <script setup lang="ts">
 import { motion } from 'motion-v'
 import type { VariantType } from 'motion-v'
-import type { NavigationMenuItem } from '@nuxt/ui'
+import type { DropdownMenuItem, NavigationMenuItem } from '@nuxt/ui'
+
+const route = useRoute()
+const { user, ready, isStaff, logout } = useAuth()
 
 const items: NavigationMenuItem[] = [
   {
     label: 'Home',
     to: '/'
+  },
+  {
+    label: 'Servers',
+    to: '/servers'
   },
   {
     label: 'Downloads',
@@ -23,6 +30,25 @@ const items: NavigationMenuItem[] = [
     target: '_blank'
   }
 ]
+
+async function signOut() {
+  await logout()
+  if (route.path.startsWith('/dashboard') || route.path.startsWith('/admin')) await navigateTo('/')
+}
+
+const accountItems = computed<DropdownMenuItem[][]>(() => [
+  [{ label: user.value?.username ?? '', type: 'label' as const }],
+  [
+    { label: 'Dashboard', icon: 'i-lucide-layout-dashboard', to: '/dashboard' },
+    ...(isStaff.value ? [{ label: 'Admin', icon: 'i-lucide-shield', to: '/admin' }] : [])
+  ],
+  [{ label: 'Sign out', icon: 'i-lucide-log-out', onSelect: signOut }]
+])
+
+const signInLink = computed(() => ({
+  path: '/login',
+  query: route.path === '/login' || route.path === '/register' ? route.query : { redirect: route.fullPath }
+}))
 
 const variants: Record<string, VariantType | ((custom: unknown) => VariantType)> = {
   normal: {
@@ -63,6 +89,38 @@ const variants: Record<string, VariantType | ((custom: unknown) => VariantType)>
     />
 
     <template #right>
+      <ClientOnly>
+        <UDropdownMenu
+          v-if="user"
+          :items="accountItems"
+          :content="{ align: 'end' }"
+        >
+          <UButton
+            :label="user.username"
+            icon="i-lucide-circle-user"
+            color="neutral"
+            variant="ghost"
+            trailing-icon="i-lucide-chevron-down"
+            class="hidden sm:inline-flex"
+          />
+          <UButton
+            icon="i-lucide-circle-user"
+            color="neutral"
+            variant="ghost"
+            aria-label="Account menu"
+            class="sm:hidden"
+          />
+        </UDropdownMenu>
+        <UButton
+          v-else-if="ready"
+          :to="signInLink"
+          label="Sign in"
+          icon="i-lucide-log-in"
+          color="neutral"
+          variant="ghost"
+        />
+      </ClientOnly>
+
       <UButton
         icon="i-simple-icons-github"
         to="https://github.com/SpoutCraftRedux"

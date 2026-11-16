@@ -35,6 +35,15 @@ export default defineNuxtConfig({
     }
   },
 
+  routeRules: {
+    '/login': { ssr: false },
+    '/register': { ssr: false },
+    '/dashboard': { ssr: false },
+    '/dashboard/**': { ssr: false },
+    '/admin': { ssr: false },
+    '/admin/**': { ssr: false }
+  },
+
   compatibilityDate: '2026-06-30',
 
   eslint: {

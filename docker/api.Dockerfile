@@ -9,7 +9,7 @@ RUN pnpm --filter api build
 
 FROM node:24-alpine
 WORKDIR /app
-ENV NODE_ENV=production PORT=3000 NITRO_DATA_DIR=/data/builds
+ENV NODE_ENV=production PORT=3000 HOST=:: NITRO_DATA_DIR=/data/builds
 COPY --from=build /app/apps/api/.output ./
 RUN mkdir -p /data/builds && chown -R node:node /data
 USER node

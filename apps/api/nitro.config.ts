@@ -4,7 +4,7 @@ export default defineNitroConfig({
   runtimeConfig: {
     dataDir: './.data/builds',
     uploadToken: '',
-    projects: 'spoutcraftredux,spoutcraftredux-fabric'
+    projects: 'spoutcraftredux-server,spoutcraftredux-fabric'
   },
   routeRules: {
     '/v2/**': { cors: true, headers: { 'cache-control': 'public, max-age=60' } }

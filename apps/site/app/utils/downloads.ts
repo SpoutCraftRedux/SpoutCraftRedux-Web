@@ -42,7 +42,7 @@ export interface DownloadProject {
 
 export const downloadProjects: DownloadProject[] = [
   {
-    id: 'spoutcraftredux',
+    id: 'spoutcraftredux-server',
     label: 'Server',
     description: 'Paperclip server jar. Runs on Java 25 and loads Paper and Purpur plugins.',
     icon: 'i-lucide-server',

@@ -33,9 +33,9 @@ Each app is a Coolify application built from `docker/<app>.Dockerfile`.
 The API stores builds on a volume at `/data/builds/<project>/<version>/<build>/`. CI uploads builds with a bearer token (`NITRO_UPLOAD_TOKEN`):
 
 ```sh
-curl -X POST https://api.spoutcraftredux.org/v2/spoutcraftredux/26.3 \
+curl -X POST https://api.spoutcraftredux.org/v2/spoutcraftredux-server/26.3 \
   -H "Authorization: Bearer $TOKEN" \
-  -F file=@spoutcraftredux-paperclip-26.3.jar \
+  -F file=@spoutcraftredux-paperclip-26.3.build.42-stable.jar \
   -F build=42 \
   -F 'commits=[{"author":"…","email":"…","description":"…","hash":"…","timestamp":"2026-11-16T00:00:00Z"}]'
 ```

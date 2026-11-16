@@ -1,5 +1,5 @@
 const p = (name: string, description: string) => ({ name, in: 'path', required: true, description, schema: { type: 'string' } })
-const project = p('project', 'spoutcraftredux (server) or spoutcraftredux-fabric (client)')
+const project = p('project', 'spoutcraftredux-server or spoutcraftredux-fabric')
 const version = p('version', 'Minecraft version, e.g. 26.3')
 const build = p('build', 'Build number or "latest"')
 

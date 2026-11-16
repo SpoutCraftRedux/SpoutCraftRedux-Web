@@ -35,6 +35,10 @@ export default defineNuxtConfig({
     }
   },
 
+  routeRules: {
+    '/': { redirect: { to: '/getting-started', statusCode: 301 } }
+  },
+
   experimental: {
     asyncContext: true
   },
@@ -100,7 +104,7 @@ export default defineNuxtConfig({
 
   prerender: {
     routes: [
-      '/'
+      '/getting-started'
     ],
     crawlLinks: true
   }

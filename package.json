@@ -1,0 +1,14 @@
+{
+  "name": "spoutcraftredux-web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev:site": "pnpm --filter site dev",
+    "dev:docs": "pnpm --filter docs dev",
+    "dev:api": "pnpm --filter api dev",
+    "build": "pnpm -r build",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck"
+  },
+  "packageManager": "pnpm@10.33.0"
+}
